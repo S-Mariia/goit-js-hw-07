@@ -1,7 +1,7 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItemsPlus } from './gallery-items-plus.js';
 
 const gallery = document.querySelector('.gallery');
-const markup = createGalleryMarkup(galleryItems);
+const markup = createGalleryMarkup(galleryItemsPlus);
 gallery.innerHTML = markup;
 
 // add an attribute "href" to tegs "a" with a value from img "data-source"
@@ -61,9 +61,7 @@ function onEscapeClick(evt) {
         document.removeEventListener('keydown', onEscapeClick);
         return;
     }
-
-    console.log("Click")
-
+    
     modal.close();
     document.removeEventListener('keydown', onEscapeClick);
 }
