@@ -4,20 +4,13 @@ const gallery = document.querySelector('.gallery');
 const markup = createGalleryMarkup(galleryItemsPlus);
 gallery.innerHTML = markup;
 
-// add an attribute "href" to tegs "a" with a value from img "data-source"
-const galleryImages = document.querySelectorAll('.gallery__image');
-galleryImages.forEach((img) => {
-    img.closest('a').href = img.dataset.source;
-})
-
 let modal = '';
 
-gallery.addEventListener('click', onGalleryPictureClick)
-
+gallery.addEventListener('click', onGalleryPictureClick);
 
 function createGalleryMarkup(listOfObjects) {
 return listOfObjects.map(({preview, original, description}) =>  `<div class="gallery__item">
-  <a class="gallery__link">
+  <a class="gallery__link" href="${original}">
     <img
       class="gallery__image"
       src="${preview}"
@@ -36,32 +29,28 @@ function onGalleryPictureClick(evt) {
         return;
     }
 
-    const currentImgUrl = evt.target.dataset.source;
+  const currentImgUrl = evt.target.dataset.source;
 
-    modal = createModal(currentImgUrl);
-    modal.show();
-
-    if (modal.visible()) {
-        document.addEventListener('keydown', onEscapeClick);
-    }
+  modal = createModal(currentImgUrl);
+  modal.show();
 }
 
 function createModal(url) {
     return basicLightbox.create(`
-    <img src="${url}">
-`);
+    <img src="${url}">`, {
+	onShow: () => window.addEventListener('keydown', onEscapeClick),
+  onClose: () => window.removeEventListener('keydown', onEscapeClick),
+    });
 }
 
 function onEscapeClick(evt) {
     if (evt.code !== "Escape") {
         return;
     }
-
-    if (!modal.visible()) {
-        document.removeEventListener('keydown', onEscapeClick);
-        return;
-    }
     
     modal.close();
-    document.removeEventListener('keydown', onEscapeClick);
 }
+
+
+    
+
